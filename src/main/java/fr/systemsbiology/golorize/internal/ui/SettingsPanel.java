@@ -60,6 +60,7 @@ import org.cytoscape.view.vizmap.VisualMappingManager;
 import org.cytoscape.work.SynchronousTaskManager;
 
 import fr.systemsbiology.golorize.internal.BiNGO.*;
+import fr.systemsbiology.golorize.internal.GOlorize;
 
 /******************************************************************
  * SettingsPanel.java:       Steven Maere & Karel Heymans (c) March 2005
@@ -237,6 +238,7 @@ public class SettingsPanel extends JPanel {
 	private CyNetworkViewManager viewMgr;
 	private VisualMappingManager vmMgr;
 	private CyRootNetworkManager rootNetMgr;
+	private GOlorize goBin=null;
 
 	/**
 	 * This constructor creates the panel with its swing-components.
@@ -244,7 +246,8 @@ public class SettingsPanel extends JPanel {
 	public SettingsPanel(final String bingoDir,final CyRootNetworkManager rootNetMgr,
 			final CyNetworkViewManager networkViewManager,
             final CyApplicationManager appMgr,
-            final VisualMappingManager vmMgr, final CySwingAppAdapter adapter, final OpenBrowser openBrowserService, final SynchronousTaskManager<?> syncTaskManager) {
+            final VisualMappingManager vmMgr, final CySwingAppAdapter adapter, final OpenBrowser openBrowserService, 
+            final SynchronousTaskManager<?> syncTaskManager, GOlorize goBin) {
 		super();
 		this.bingoDir = bingoDir;
 		this.adapter= adapter;
@@ -254,6 +257,7 @@ public class SettingsPanel extends JPanel {
 		this.viewMgr = networkViewManager;
 		this.rootNetMgr = rootNetMgr;
 		this.vmMgr = vmMgr;
+		this.goBin = goBin;
 
 		// Create a new bingo parameter set
 		try {
@@ -487,7 +491,7 @@ public class SettingsPanel extends JPanel {
 		// the bingo-button to start the calculations.
 		bingoButton = new JButton("Start BiNGO");
 		bingoButton.setMnemonic(KeyEvent.VK_B);
-		bingoButton.addActionListener(new SettingsPanelActionListener(params, this,rootNetMgr,viewMgr,appMgr,vmMgr,  adapter, syncTaskManager,openBrowserService));
+		bingoButton.addActionListener(new SettingsPanelActionListener(params, this,rootNetMgr,viewMgr,appMgr,vmMgr,  adapter, syncTaskManager,openBrowserService,goBin));
 	}
 
 	public TextOrGraphPanel getTextOrGraphPanel() {

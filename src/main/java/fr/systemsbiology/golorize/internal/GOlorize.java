@@ -257,7 +257,9 @@ public class GOlorize extends JFrame {
         });
         
         this.setLocation(25,screenSize.height-450);
-        this.setSize(screenSize.width-50,400);
+        //this.setSize(screenSize.width-50,400);
+        
+        this.setSize(adapter.getCySwingApplication().getJFrame().getSize().width,400);
 
         setVisible(true);
         setResizable(true);
@@ -284,7 +286,8 @@ public class GOlorize extends JFrame {
             
             String tmp = System.getProperty("user.dir") ;
             String bingoDir = new File(tmp,adapter.getCoreProperties().DEFAULT_PROPS_CONFIG_DIR+"/3/").toString() ;
-            SettingsPanel settingsPanel = new SettingsPanel(bingoDir,rootNetMgr,viewMgr,appMgr,vmMgr, (CySwingAppAdapter)adapter, openBrowserService, syncTaskManager);
+            SettingsPanel settingsPanel = new SettingsPanel(bingoDir,rootNetMgr,viewMgr,appMgr,vmMgr, 
+            		(CySwingAppAdapter)adapter, openBrowserService, syncTaskManager,this);
             getBingoWindow().getContentPane().removeAll();
             getBingoWindow().getContentPane().add(settingsPanel);
             

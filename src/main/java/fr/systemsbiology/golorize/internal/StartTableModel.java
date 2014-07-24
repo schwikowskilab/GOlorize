@@ -40,6 +40,7 @@ import java.util.List;
 import javax.swing.*;
 import javax.swing.event.TableModelEvent;
 import javax.swing.event.TableModelListener;
+import fr.systemsbiology.golorize.internal.BiNGO.*;
 /**
  *
  * @author ogarcia
@@ -228,9 +229,9 @@ class MouseStartPanelHandler extends MouseAdapter{
 
 
         ////DE LA COULEUR !!!!!
-        if (modelColumn==resultPanel.getDescriptionColumn()){
+        if (modelColumn==resultPanel.getDescriptionColumn())
+        {
             String term = (String)jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.getGoTermColumn());
-           //if (!this.resultPanel.isAutoColor()){
                 JColorChooser colorChooser = new JColorChooser();
 
                 Color newColor = JColorChooser.showDialog(
@@ -244,30 +245,7 @@ class MouseStartPanelHandler extends MouseAdapter{
                 resultPanel.getGOlorize().freeAutomaticColor(term);
                 resultPanel.goBin.getGoColor().put(term,newColor);
                 resultPanel.goBin.synchroColor();
-           //}
-           /*else {
-                if (!resultPanel.getGOlorize().isAutomaticlyColored(term)){
-                    if (resultPanel.getGOlorize().freeAutomaticColor()){
-                        //System.out.println("lasjkdhfasdh fkjash fkjahsd fkjhas df");
-                        Color newColor = resultPanel.getGOlorize().getNextAutomaticColor(term);
-                        ((JLabel)jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.getDescriptionColumn())).setBackground(newColor);
-
-                        goColor.put(term,newColor);
-                        resultPanel.goBin.goColor.put(term,newColor);
-                        resultPanel.goBin.synchroColor();
-                    }
-                    else {
-                        resultPanel.setAutoColor(false);
-                    }
-                }
-                else {
-                    resultPanel.getGOlorize().freeAutomaticColor(term);
-                    ((JLabel)jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.getDescriptionColumn())).setBackground(null);
-                    resultPanel.goBin.goColor.put(term,null);
-                    resultPanel.goBin.synchroColor();
-                }
-           }*/
-//jTable1.
+          
 
         }
                 

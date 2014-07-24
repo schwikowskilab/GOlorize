@@ -296,19 +296,19 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 			if (columnNames[i].equals(" "))
 				tcModel.getColumn(i).setPreferredWidth(15);
 			if (columnNames[i].equals("GO-ID"))
-				tcModel.getColumn(i).setPreferredWidth(50);
+				tcModel.getColumn(i).setPreferredWidth(80);
 			if (columnNames[i].equals("Description"))
-				tcModel.getColumn(i).setPreferredWidth((screenSize.width - 15 - 50 - 85 - 85 - 70 - 70 - 40) / 2);
+				tcModel.getColumn(i).setPreferredWidth((screenSize.width - 15 - 80 - 120 - 120 - 70 - 100 - 40) / 2);
 			if (columnNames[i].equals("cluster freq"))
-				tcModel.getColumn(i).setPreferredWidth(85);
+				tcModel.getColumn(i).setPreferredWidth(120);
 			if (columnNames[i].equals("total freq"))
-				tcModel.getColumn(i).setPreferredWidth(85);
+				tcModel.getColumn(i).setPreferredWidth(120);
 			if (columnNames[i].equals("genes"))
-				tcModel.getColumn(i).setPreferredWidth((screenSize.width - 15 - 50 - 85 - 85 - 70 - 70 - 40) / 2);
+				tcModel.getColumn(i).setPreferredWidth((screenSize.width - 15 - 80 - 120 - 120 - 70 - 100 - 40) / 2);
 			if (columnNames[i].equals("p-val"))
 				tcModel.getColumn(i).setPreferredWidth(70);
 			if (columnNames[i].equals("corr p-val"))
-				tcModel.getColumn(i).setPreferredWidth(70);
+				tcModel.getColumn(i).setPreferredWidth(100);
 		}
 		jTable1.getTableHeader().addMouseListener(new MouseAdapter() {
 			public void mouseClicked(MouseEvent e) {

@@ -96,7 +96,7 @@ public class Browser {
 	 * @since ostermillerutils 1.00.00
 	 */
 	protected static ResourceBundle labels = ResourceBundle.getBundle(
-			"bingo.Browser", Locale.getDefault());
+			"props.Browser", Locale.getDefault());
 
 	/**
 	 * Set the locale used for getting localized strings.
@@ -106,7 +106,7 @@ public class Browser {
 	 * @since ostermillerutils 1.00.00
 	 */
 	public static void setLocale(Locale locale) {
-		labels = ResourceBundle.getBundle("bingo.Browser", locale);
+		labels = ResourceBundle.getBundle("props.Browser", locale);
 	}
 
 	/**
@@ -171,10 +171,10 @@ public class Browser {
 			} catch (InterruptedException e) {
 			}
 			try {
-				Process p = Runtime.getRuntime().exec("which mozilla");
+				Process p = Runtime.getRuntime().exec("which firefox");
 				if (p.waitFor() == 0) {
-					browsers.add("mozilla -remote openURL({0})");
-					browsers.add("mozilla {0}");
+					browsers.add("firefox -remote openURL({0})");
+					browsers.add("firefox {0}");
 				}
 			} catch (IOException e) {
 			} catch (InterruptedException e) {

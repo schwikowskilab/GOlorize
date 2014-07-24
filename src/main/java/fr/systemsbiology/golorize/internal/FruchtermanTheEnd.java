@@ -103,7 +103,7 @@ public class FruchtermanTheEnd {
     /** Creates a new instance of FruchtermanTheEnd */
     
     
-    public FruchtermanTheEnd(LayoutPanel pane,HashSet goNodesNorma,HashSet goNodesStrang,CyNetworkView graphView
+    public FruchtermanTheEnd(LayoutPanel pane,Set<String> goNodesNorma,Set<String> goNodesStrang,CyNetworkView graphView
             , String sWeightGo,String krep,String katt,String iter,String t) {
     
     	this.graphView = graphView;
@@ -230,7 +230,7 @@ public class FruchtermanTheEnd {
         for (nodeIndex=0;nodeIndex<nodeTranslation.length;nodeIndex++){
             View<CyNode> currentNodeView =nodeTranslation[nodeIndex];
             if (nodeIndexTranslation.put
-              (new Integer(currentNodeView.getModel().getSUID().intValue()),
+              (currentNodeView.getModel().getSUID(),
                new Integer(nodeIndex)) != null)
             throw new IllegalStateException("Giny farted and someone lit a match");
         }
@@ -247,14 +247,14 @@ public class FruchtermanTheEnd {
         while (edgeIterator.hasNext())
         {
           CyEdge currentEdge = ((View<CyEdge>) edgeIterator.next()).getModel();
-          int ginySourceNodeIndex = currentEdge.getSource().getSUID().intValue();
-          int ginyTargetNodeIndex = currentEdge.getTarget().getSUID().intValue();
+          Long ginySourceNodeIndex = currentEdge.getSource().getSUID();
+          Long ginyTargetNodeIndex = currentEdge.getTarget().getSUID();
           int nativeSourceNodeIndex =
             ((Integer) nodeIndexTranslation.get
-             (new Integer(ginySourceNodeIndex))).intValue();
+             (ginySourceNodeIndex)).intValue();
           int nativeTargetNodeIndex =
             ((Integer) nodeIndexTranslation.get
-             (new Integer(ginyTargetNodeIndex))).intValue();
+             (ginyTargetNodeIndex)).intValue();
           Vector chosenEdgeVector = undirectedEdgeVector;
           if (currentEdge.isDirected()) chosenEdgeVector = directedEdgeVector;
           chosenEdgeVector.add(new int[] { nativeSourceNodeIndex,

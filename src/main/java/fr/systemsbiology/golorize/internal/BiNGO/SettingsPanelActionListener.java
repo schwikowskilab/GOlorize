@@ -137,7 +137,8 @@ public class SettingsPanelActionListener implements ActionListener {
             final VisualMappingManager vmMgr,
 			final CySwingAppAdapter adapter, 
 			final SynchronousTaskManager<?> syncTaskManager,
-			final OpenBrowser openBrowserService) {
+			final OpenBrowser openBrowserService,
+			GOlorize goBin) {
 		this.adapter = adapter;
 		this.syncTaskManager = syncTaskManager;
 		this.params = params;
@@ -149,6 +150,7 @@ public class SettingsPanelActionListener implements ActionListener {
 		this.goBin = null;
 		this.startNetworkView = null;
 		this.startNetwork = null;
+		this.goBin = goBin;
 		this.openBrowserService = openBrowserService;
 		ecCodes = new HashSet<String>();
 		ecCodes.add("IEA");

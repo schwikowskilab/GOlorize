@@ -142,12 +142,12 @@ public class StartPanelPanel extends javax.swing.JPanel implements ResultAndStar
                         if (columnNames[i].equals("Term"))
                             tcModel.getColumn(i).setPreferredWidth(50);
                          if (columnNames[i].equals("Description"))
-                            tcModel.getColumn(i).setPreferredWidth((screenSize.width-15-50-100-10-15)/2);
+                            tcModel.getColumn(i).setPreferredWidth((goBin.getSize().width-15-50-100-15-20)/2);
                          if (columnNames[i].equals("Annotation"))
-                            tcModel.getColumn(i).setPreferredWidth((screenSize.width-15-50-100-10-15)/2);
+                            tcModel.getColumn(i).setPreferredWidth((goBin.getSize().width-15-50-100-15-20)/2);
                          if (columnNames[i].equals("X")){
-                            tcModel.getColumn(i).setPreferredWidth(10);
-                            tcModel.getColumn(i).setMaxWidth(10);
+                            tcModel.getColumn(i).setPreferredWidth(20);
+                            tcModel.getColumn(i).setMaxWidth(20);
                             tcModel.getColumn(i).setResizable(false);
                          }
                          if (columnNames[i].equals("Layout")){

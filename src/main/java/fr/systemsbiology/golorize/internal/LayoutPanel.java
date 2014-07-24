@@ -160,14 +160,14 @@ public class LayoutPanel implements ResultAndStartPanel{
                 if (columnNames[i].equals("Term"))
                     tcModel.getColumn(i).setPreferredWidth(50);
                  if (columnNames[i].equals("Description"))
-                    tcModel.getColumn(i).setPreferredWidth((screenSize.width-15-50-100-15-200)/2);
+                    tcModel.getColumn(i).setPreferredWidth((goBin.getSize().width-15-50-100-20-120)/2);
                  if (columnNames[i].equals("Annotation"))
-                    tcModel.getColumn(i).setPreferredWidth((screenSize.width-15-50-100-15-200)/2);
-                 if (columnNames[i].equals("Method"))
-                    tcModel.getColumn(i).setPreferredWidth(200);
+                    tcModel.getColumn(i).setPreferredWidth((goBin.getSize().width-15-50-100-20-120)/2);
+                 if (columnNames[i].equals("Group Separation"))
+                    tcModel.getColumn(i).setPreferredWidth(120);
                  if (columnNames[i].equals("X")){
-                    tcModel.getColumn(i).setPreferredWidth(10);
-                    tcModel.getColumn(i).setMaxWidth(10);
+                    tcModel.getColumn(i).setPreferredWidth(20);
+                    tcModel.getColumn(i).setMaxWidth(20);
                     tcModel.getColumn(i).setResizable(false);
                  }
         }
@@ -676,11 +676,12 @@ public class LayoutPanel implements ResultAndStartPanel{
     }
     
     void doLayout (){
-        HashSet goNodesNormal=new HashSet();
-        HashSet goNodesStrange=new HashSet();
+        Set<String> goNodesNormal=new HashSet<String>();
+        Set<String> goNodesStrange=new HashSet<String>();
         String term;
         
-        for (int i=0;i<jTable1.getRowCount();i++){
+        for (int i=0;i<jTable1.getRowCount();i++)
+        {
             term = (String)jTable1.getValueAt(i,this.getGoTermColumn());
             Integer integerLine=new Integer(0);;
             if (this.isSelected(i)){
@@ -693,37 +694,18 @@ public class LayoutPanel implements ResultAndStartPanel{
                 */
                 if (this.isLayoutSelected(i)){
                     goNodesStrange.add(term);
-                    System.out.println("Strnage "+term);
+                    //System.out.println("Strnage "+term);
                 }
                 else {
                     goNodesNormal.add(term);
-                    System.out.println("normal "+term);
+                    //System.out.println("normal "+term);
                 }
             }
         }
-        //if (((String)this.layoutMethod.getSelectedItem()).equals(this.LAYOUT1)){
-            new FruchtermanTheEnd(this,goNodesNormal,goNodesStrange,getNetworkView(),"","","",
-                                "","");
+        new FruchtermanTheEnd(this,goNodesNormal,goNodesStrange,getNetworkView(),"","","", "","");
            
-        //}
-        //else if (((String)this.layoutMethod.getSelectedItem()).equals(this.LAYOUT2)){
-        //    new FruchtermanSpring(this,goNodesNormal,goNodesStrange,Cytoscape.getCurrentNetworkView(),"","","",
-        //                        "","");
-        //                        System.out.println(layoutMethod.getSelectedItem());
-        //}
-        //else if (((String)this.layoutMethod.getSelectedItem()).equals(this.LAYOUT3)){
-        //    new FruchtermanSpring2(this,goNodesNormal,goNodesStrange,Cytoscape.getCurrentNetworkView(),"","","",
-        //                        "","");
-            
-        //}
-        //else 
-        //    System.out.println(layoutMethod.getSelectedItem()+" crash");
-            
-            
-        //new FruchtermanSpring2(this,goNodesNormal,goNodesStrange,Cytoscape.getCurrentNetworkView(),"","","",
-        //                        "","");
-        //new FruchtermanTheEnd(this,goNodesNormal,goNodesStrange,Cytoscape.getCurrentNetworkView(),"","","",
-         //                       "","");
+        appMgr.getCurrentNetworkView().updateView();
+       
     }
     public DisplayPieChart2 getDisplayPieChart(){
         return null;
