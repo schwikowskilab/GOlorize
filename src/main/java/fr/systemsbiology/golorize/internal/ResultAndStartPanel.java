@@ -31,6 +31,7 @@ package fr.systemsbiology.golorize.internal;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
 
 import org.cytoscape.view.model.CyNetworkView;
 
@@ -70,7 +71,9 @@ public interface ResultAndStartPanel {
 
 	public CyNetworkView getNetworkView();
 
-	public Map getAlias();
+	public Map<String, Set<String>> getAlias();
+	
+	public void setAlias(Map<String, Set<String>> alias);
 	
 	public DisplayPieChart2 getDisplayPieChart();
 }

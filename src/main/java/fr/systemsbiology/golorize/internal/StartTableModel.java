@@ -221,13 +221,6 @@ class MouseStartPanelHandler extends MouseAdapter{
             }
         }
 
-
-
-
-
-
-
-
         ////DE LA COULEUR !!!!!
         if (modelColumn==resultPanel.getDescriptionColumn())
         {

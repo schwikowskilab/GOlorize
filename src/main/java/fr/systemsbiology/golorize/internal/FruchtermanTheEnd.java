@@ -30,13 +30,10 @@
 package fr.systemsbiology.golorize.internal;
 import org.cytoscape.view.model.*;
 
-import java.util.Hashtable;
-import java.util.Iterator;
-import java.util.Vector;
-import java.util.Random;
 import java.util.*;
 import org.cytoscape.view.presentation.property.BasicVisualLexicon;
 import org.cytoscape.model.*;
+
 import fr.systemsbiology.golorize.internal.ontology.*;
 /**
  *
@@ -139,9 +136,7 @@ public class FruchtermanTheEnd {
             panel.vectorFactorForStrangeThings.setText("100");
         }
         
-        //double nodeHeight=graphView.getVizMapManager().getVisualStyle().getNodeAppearanceCalculator().getDefaultNodeHeight();
-        //double nodeWidth=graphView.getVizMapManager().getVisualStyle().getNodeAppearanceCalculator().getDefaultNodeWidth();
-        //nodeSize= Math.max(nodeHeight,nodeWidth);
+        
         double nodeHeight=graphView.getVisualProperty(BasicVisualLexicon.NODE_HEIGHT);
         double nodeWidth=graphView.getVisualProperty(BasicVisualLexicon.NODE_WIDTH);
         nodeSize= Math.max(nodeHeight,nodeWidth);//ca marche pas!!!
@@ -154,7 +149,7 @@ public class FruchtermanTheEnd {
         
         
         //nodeSize=30;
-        numNodesInTopology = graphView.getNodeViews().size();
+        numNodesInTopology = graphView.getModel().getNodeCount();
         //final double maxLayoutDimension = /*Math.sqrt(kr*(double)numNodesInTopology);*/400.0d +
         //  Math.sqrt(((double) (numNodesInTopology * numNodesInTopology)) * 200.0d);
 //final double maxLayoutDimension = 5000.0*numNodesInTopology 
@@ -392,32 +387,7 @@ public class FruchtermanTheEnd {
             circularize ( nodeXPositions,nodeYPositions,  maxLayoutDimension);
             
         }
-        //if (panel.circularize.isSelected()){
-        //    circularize ( nodeXPositions,nodeYPositions,  maxLayoutDimension);
-        //}
-        /*else{
-            for (int i =0;i<this.normalGoNodeXPositions.length;i++){
-                if (panel.goNodesNormalPosition.containsKey(goNodesNormalTranslation[i])){
-                    this.normalGoNodeXPositions[i]=((double[])panel.goNodesNormalPosition.get(goNodesNormalTranslation[i]))[0];
-                    this.normalGoNodeYPositions[i]=((double[])panel.goNodesNormalPosition.get(goNodesNormalTranslation[i]))[1];
-                }
-            }
-            for (int i =0;i<strangeGoNodeXPositions.length;i++){
-                if (panel.goNodesStrangePosition.containsKey(goNodesStrangeTranslation[i])){
-                    strangeGoNodeXPositions[i]=
-                            ((double[])panel.goNodesStrangePosition.get(goNodesStrangeTranslation[i]))[0];
-                    strangeGoNodeYPositions[i]=
-                            ((double[])panel.goNodesStrangePosition.get(goNodesStrangeTranslation[i]))[1];
-                }
-            }
-        }
-        */
-        
-        
-        
-        
-        //goIndex = ordonneEdgeGo(directedEdgeSourceNodeIndices,directedEdgeTargetNodeIndices,graphView,nodeTranslation);
-        
+       
         double area = maxLayoutDimension*maxLayoutDimension;
         
         k=Math.sqrt(area/numNodesInTopology);
@@ -450,14 +420,7 @@ public class FruchtermanTheEnd {
             gridHashSet[tempColumn][tempRow].add(new Integer(i));
         }
         ///////////////////////////////
-        
-        
-        
-        
-        
-        
-        
-        
+ 
         vDisp=new double [numNodesInTopology][2];
         vDispGoNormal = new double [goNodesNormalTranslation.length][2];
         vDispGoStrange = new double [goNodesStrangeTranslation.length][2];
@@ -509,11 +472,7 @@ public class FruchtermanTheEnd {
             this.goReplacementTurn(this.normalGoNodeXPositions,this.normalGoNodeYPositions,tempEnCours,vDispGoNormal);
             this.goReplacementTurn(this.strangeGoNodeXPositions,this.strangeGoNodeYPositions,tempEnCours,vDispGoStrange);
             
-            //if (stop >iterations /5 && !again){
-            //    again=true;
-            //    stop=0;
-            //}
-            
+        
             stop ++;
         }
         
@@ -620,37 +579,6 @@ public class FruchtermanTheEnd {
             
             }
             
-            
-            
-            
-            
-            
-            
-            
-            /*
-            for (int i=0;i<this.strangeGoNodeXPositions.length;i++){
-                finalXPositionsStrange[i]=strangeGoNodeXPositions[i] + 
-                        (this.vectorFactor-1)*(strangeGoNodeXPositions[i]-barycentreX);
-                finalYPositionsStrange[i]=strangeGoNodeYPositions[i] + 
-                        (this.vectorFactor-1)*(strangeGoNodeYPositions[i]-barycentreY);
-                if (finalXPositionsStrange[i]<goMinX){
-                    goMinX=finalXPositionsStrange[i];
-                    goIndexMinX=i;
-                }
-                if (finalXPositionsStrange[i]>goMaxX){
-                    goMaxX=finalXPositionsStrange[i];
-                    goIndexMaxX=i;
-                }
-                if (finalYPositionsStrange[i]<goMinY){
-                    goMinY=finalYPositionsStrange[i];
-                    goIndexMinY=i;
-                }
-                if (finalYPositionsStrange[i]>goMaxY){
-                    goMaxY=finalYPositionsStrange[i];
-                    goIndexMaxY=i;
-                }
-            }
-            */
             if (goMinX < -3.0/4.0*maxLayoutDimension){
                 double tropAGaucheDe =  -(goMinX + 3.0/4.0*maxLayoutDimension) ;
                 if (goMaxX < 3.0/4.0*maxLayoutDimension - tropAGaucheDe){
@@ -754,7 +682,8 @@ public class FruchtermanTheEnd {
             
             
             
-            if (this.panel.style.getSelectedItem().equals(panel.METHOD1) || this.panel.style.getSelectedItem().equals(panel.METHOD3)){
+            if (this.panel.style.getSelectedItem().equals(panel.METHOD1) || this.panel.style.getSelectedItem().equals(panel.METHOD3))
+            {
                 stop =1;
                 
                 //temp = k;
@@ -817,26 +746,7 @@ public class FruchtermanTheEnd {
             
             
         }
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
-        
+ 
   ////////////////////////////////////////////////////////////////      
         
         for (int i = 0; i < nodeTranslation.length; i++) {
@@ -846,6 +756,7 @@ public class FruchtermanTheEnd {
             nodeTranslation[i].setVisualProperty(BasicVisualLexicon.NODE_Y_LOCATION,nodeYPositions[i]+(maxLayoutDimension/2.0));
         //System.out.println(nodeXPositions[i]+" "+nodeYPositions[i]);
         }
+        
     }
     
     
@@ -898,21 +809,45 @@ public class FruchtermanTheEnd {
         ArrayList[] retour = new ArrayList[goNodeTranslation.length];
        
         HashMap term_Annotation = panel.getTermAnnotation();
+   
         Annotation annotation;
         String term;
         int termint;
         int[] classification;
+        Map<String, Set<String>> alias = null;
+        for(int i=1 ; i< panel.getGOlorize().getResultPanelCount()+1;i++)
+        {
+        	ResultAndStartPanel result = (ResultAndStartPanel) panel.getGOlorize().getResultPanelAt(i);
+        	if(result.getNetworkView().equals(graphView))
+        	{
+        		alias = result.getAlias();
+        		break;
+        	}
+        }
+        
+        if(alias == null)
+        	return retour;
+        
         for (int j=0;j<goNodeTranslation.length;j++){
             term = goNodeTranslation[j];
             annotation = (Annotation)term_Annotation.get(term);
             termint = Integer.parseInt(term);
             retour[j]=new ArrayList();
             for (int i=0;i<nodeTranslation.length;i++){
-                classification=annotation.getClassifications(graphView.getModel().getRow(nodeTranslation[i].getModel()).get(CyNetwork.NAME, String.class));
-                for (int k=0;k<classification.length;k++){
-                    if (classification[k]==termint)
-                        retour[j].add(new Integer(i));
-                }
+            	String nodeName = graphView.getModel().getRow(nodeTranslation[i].getModel()).get(CyNetwork.NAME, String.class);
+            	
+            	if(alias.get(nodeName) == null)
+            		continue;
+            	
+            	for(String id : alias.get(nodeName ))
+            	{
+	                classification=annotation.getClassifications(id);
+	                for (int k=0;k<classification.length;k++)
+	                {
+	                    if (classification[k]==termint)
+	                        retour[j].add(new Integer(i));
+	                }
+            	}
             }
         }
         return retour;
@@ -1050,140 +985,7 @@ public class FruchtermanTheEnd {
                 }
             }
     }
-    private void repulsionTurn2(double kk,int stop,double [] nodeXPosition,double [] nodeYPosition, double[][] vDis){
-        int nodeEnCours;
-        int nodeEnCours2;
-        double k=kk;
-        double kAlt;
-        double distance;
-        double [] nodeXPositions=nodeXPosition;
-        double [] nodeYPositions=nodeYPosition;
-        double vDisp[][]=vDis;
-        double [] delta=new double[2];
-        
-        
-        for (int col=0;col<casesNumber;col++){
-                for (int row=0;row<casesNumber;row++){
-                    Iterator it= gridHashSet[col][row].iterator();
-                    while (it.hasNext()){
-                        nodeEnCours=((Integer)it.next()).intValue();
-                        vDisp[nodeEnCours][0]=0;
-                        vDisp[nodeEnCours][1]=0;
-                        
-                        if (nodeXPositions[nodeEnCours]<-maxLayoutDimensionAgrandie/4 ){
-                            kAlt = (10*k)-((10*k)*(nodeXPositions[nodeEnCours]-maxLayoutDimensionAgrandie/2.0)
-                            /(maxLayoutDimensionAgrandie/4.0));
-                            vDisp[nodeEnCours][0]+=fRep(2*k,kAlt);
-                        }
-                        if (nodeXPositions[nodeEnCours] >maxLayoutDimensionAgrandie*3/4){
-                            kAlt = (10*k)-((10*k)*(maxLayoutDimensionAgrandie/2.0-nodeXPositions[nodeEnCours])
-                            /(maxLayoutDimensionAgrandie/4.0));
-                            vDisp[nodeEnCours][0]-=fRep(2*k,kAlt);
-                        }
-                        if (nodeYPositions[nodeEnCours]<-maxLayoutDimensionAgrandie/4){
-                            kAlt = (10*k)-((10*k)*(nodeYPositions[nodeEnCours]-maxLayoutDimensionAgrandie/2.0)
-                            /(maxLayoutDimensionAgrandie/4.0));
-                            vDisp[nodeEnCours][1]+=fRep(2*k,kAlt);
-                        }
-                        if (nodeYPositions[nodeEnCours] >maxLayoutDimensionAgrandie*3/4){
-                            kAlt = (10*k)-((10*k)*(maxLayoutDimensionAgrandie/2.0-nodeYPositions[nodeEnCours])
-                            /(maxLayoutDimensionAgrandie/4.0));
-                            vDisp[nodeEnCours][1]-=fRep(2*k,kAlt);
-                        }
-                                                 
-                        for (int i=-1;i<=1;i++){
-                            if (!(col+i<0 || col+i>=casesNumber))
-                            {    //continue;
-                            for (int j=-1;j<=1;j++){
-                                if (!(row+j<0 || row+j>=casesNumber))
-                                {    //continue;
-                                Iterator it2=gridHashSet[col+i][row+j].iterator();
-                                while (it2.hasNext()){
-                                    nodeEnCours2=((Integer)it2.next()).intValue();
-                                    if (nodeEnCours!=nodeEnCours2){
-                                                //System.out.println("calcul repulsion\nposition "+i+" "+nodeXPositions[i]+","+nodeYPositions[i]);
-                                                //System.out.println("position "+j+" "+nodeXPositions[j]+","+nodeYPositions[j]);
-
-
-                                        delta[0]=nodeXPositions[nodeEnCours]-nodeXPositions[nodeEnCours2];
-                                        delta[1]=nodeYPositions[nodeEnCours]-nodeYPositions[nodeEnCours2];
-
-
-
-
-                                        
-
-                                        //System.out.println("diferrence ="+i+" "+delta[0]+","+delta[1]);
-
-                                        distance=norme(delta[0],delta[1]);
-
-
-                                        if (distance==0){
-                                            if (rand.nextDouble()<0.5){
-                                                nodeXPositions[nodeEnCours]+=1;
-                                                nodeYPositions[nodeEnCours]+=1;
-                                            }
-                                            else {
-                                                nodeXPositions[nodeEnCours]-=1;
-                                                nodeYPositions[nodeEnCours]-=1;
-                                            }
-                                            if (nodeXPositions[nodeEnCours]>=maxLayoutDimension/2)
-                                                nodeXPositions[nodeEnCours]-=2;
-                                            if (nodeXPositions[nodeEnCours]<=-maxLayoutDimension/2)
-                                                nodeXPositions[nodeEnCours]+=2;
-                                            if (nodeYPositions[nodeEnCours]>=maxLayoutDimension/2)
-                                                nodeYPositions[nodeEnCours]-=2;
-                                            if (nodeYPositions[nodeEnCours]<=-maxLayoutDimension/2)
-                                                nodeYPositions[nodeEnCours]+=2;
-
-
-                                            delta[0]=nodeXPositions[nodeEnCours]-nodeXPositions[nodeEnCours2];
-                                            delta[1]=nodeYPositions[nodeEnCours]-nodeYPositions[nodeEnCours2];
-                                            distance=norme(delta[0],delta[1]);
-                                            //System.out.println("diferrence ="+i+" "+delta[0]+","+delta[1]);
-                                            //System.out.println("position "+j+" "+nodeXPositions[j]+","+nodeYPositions[j]);
-
-                                        }
-
-                                                
-                                        if (distance<maxDistanceRepulsionEffect){
-                                                
-
-                                            if (stop>iterations*1  && stop <iterations*1/3 && distance <2*nodeSize){
-                                                vDisp[nodeEnCours][0]+=(delta[0]/distance)*fRep(2*nodeSize,k);
-                                                vDisp[nodeEnCours][1]+=(delta[1]/distance)*fRep(2*nodeSize,k); 
-                                          }
-                                            else if (stop>iterations*2/3  && stop <iterations*3/4 && distance <2*nodeSize){
-                                                vDisp[nodeEnCours][0]+=(delta[0]/distance)*fRep(2*nodeSize,k);
-                                                vDisp[nodeEnCours][1]+=(delta[1]/distance)*fRep(2*nodeSize,k); 
-                                          }
-
-
-                                            else {
-                                                vDisp[nodeEnCours][0]+=(delta[0]/distance)*fRep(distance,k);
-                                                vDisp[nodeEnCours][1]+=(delta[1]/distance)*fRep(distance,k);   
-
-
-
-                                            }
-
-
-                                        }
-
-                                                //System.out.println("les deux composantes de la force de repulsion pour "+i+" ="+vDisp[i][0]+","+vDisp[i][1]);
-                                                //System.out.println();
-                                    }
-                                }
-                                }
-                            }
-                            }
-                        }
-                    }
-                            
-                    
-                }
-            }
-    }
+ 
     private void attractionTurn(double kk , int[] directedEdgeSourceNodeIndice , int[] directedEdgeTargetNodeIndice,
         double[] nodeXPosition , double[] nodeYPosition,int goInde, double[][] vDis){
         int[] directedEdgeSourceNodeIndices=directedEdgeSourceNodeIndice;

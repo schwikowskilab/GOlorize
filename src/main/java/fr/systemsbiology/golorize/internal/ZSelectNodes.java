@@ -85,7 +85,7 @@ public class ZSelectNodes implements ActionListener {
 			}
 			final Set<CyNode> selectedNodesSet = new HashSet<CyNode>();
 
-			if (result instanceof ResultPanel) {
+			//if (result instanceof ResultPanel) {
 				this.annotation = result.getAnnotation();
 				final Collection<View<CyNode>> nodeViews = currentNetworkView.getNodeViews();				
 				for(View<CyNode> nodeView: nodeViews) {
@@ -95,11 +95,11 @@ public class ZSelectNodes implements ActionListener {
 					//final String nodeName = node.getCyRow().get(CyNetwork.NAME, String.class);
 					final String nodeName = currentNetwork.getDefaultNodeTable().getRow(node.getSUID()).get(CyNetwork.NAME, String.class);
 					
-					Set identifiers = alias.get(nodeName);
+					Set<String> identifiers = alias.get(nodeName);
 					if (identifiers != null) {
-						Iterator it = identifiers.iterator();
+						Iterator<String> it = identifiers.iterator();
 						while (it.hasNext()) {
-							int[] goID = annotation.getClassifications(it.next() + "");
+							int[] goID = annotation.getClassifications(it.next() );
 							for (int t = 0; t < goID.length; t++) {
 								goAnnot.add(goID[t] + "");
 							}
@@ -127,7 +127,7 @@ public class ZSelectNodes implements ActionListener {
 
 				adapter.getCyEventHelper().flushPayloadEvents();
 				currentNetworkView.updateView();
-			}
+			//}
 
 			this.annotation = null;
 		}

@@ -86,6 +86,10 @@ import org.cytoscape.view.layout.CyLayoutAlgorithmManager;
 import org.cytoscape.util.swing.OpenBrowser;
 import org.cytoscape.work.SynchronousTaskManager;
 import org.cytoscape.app.swing.CySwingAppAdapter;
+import org.cytoscape.view.vizmap.VisualMappingFunctionFactory;
+import org.cytoscape.view.model.VisualLexicon;
+import org.cytoscape.view.presentation.RenderingEngineManager;
+
 
 
 
@@ -112,6 +116,7 @@ public class GOlorize extends JFrame {
 	private final CySwingAppAdapter adapter;
 	private final OpenBrowser openBrowserService;
 	private final SynchronousTaskManager<?> syncTaskManager;
+	private final CyServiceRegistrar serviceRegistrar;
 	
 	private StartPanel startPanel;
 	private LayoutPanel layoutPanel;
@@ -146,6 +151,7 @@ public class GOlorize extends JFrame {
 						final CyNetworkViewManager networkViewManager,
 	                    final CyApplicationManager appMgr,
 	                    final VisualMappingManager vmMgr,
+	                    final CyServiceRegistrar serviceRegistrar,
 	                    final CySwingAppAdapter adapter, 
 	                    final OpenBrowser openBrowserService, 
 	                    final SynchronousTaskManager<?> syncTaskManager)
@@ -158,6 +164,7 @@ public class GOlorize extends JFrame {
 		this.adapter = adapter;
 		this.openBrowserService = openBrowserService;
 		this.syncTaskManager = syncTaskManager;
+		this.serviceRegistrar = serviceRegistrar;
 		
 		this.jTabbedPane=new javax.swing.JTabbedPane(JTabbedPane.TOP);
 	
@@ -250,7 +257,7 @@ public class GOlorize extends JFrame {
                     getBingoWindow().dispose();
                 if (getResultPanelCount()!=0){
                 	GOlorize goBin=(GOlorize)e.getComponent();
-                    goBin.getResultPanelAt(1).displayPieChartListener.resetAll(goBin);
+                    //goBin.getResultPanelAt(1).displayPieChartListener.resetAll(goBin);
 
                 }
             }
@@ -282,6 +289,7 @@ public class GOlorize extends JFrame {
     
     void startBiNGO(){
         
+    	CyNetworkView currentNetworkview = appMgr.getCurrentNetworkView();
             setBingoLaunched(true);
             
             String tmp = System.getProperty("user.dir") ;
@@ -310,7 +318,7 @@ public class GOlorize extends JFrame {
             getBingoWindow().setResizable(true);
             
         
-        
+           
     }
     
     public void createResultTab(Map testMap, Map correctionMap, Map mapSmallX, Map mapSmallN, Map mapBigX, Map mapBigN,
@@ -767,8 +775,17 @@ public class GOlorize extends JFrame {
     }
     
     
+    public VisualMappingManager getVisualMappingManager(){
+    	return vmMgr;
+    }
     
+    public VisualMappingFunctionFactory getPassthroughMapper(){
+    	return serviceRegistrar.getService(VisualMappingFunctionFactory.class, "(mapping.type=passthrough)");
+    }
     
+    public VisualLexicon getVisualLexicon(){
+    	return serviceRegistrar.getService(RenderingEngineManager.class).getDefaultVisualLexicon();
+    }
 }
 
 

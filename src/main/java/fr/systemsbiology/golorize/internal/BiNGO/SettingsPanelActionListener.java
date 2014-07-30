@@ -46,6 +46,7 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -1032,6 +1033,12 @@ public class SettingsPanelActionListener implements ActionListener {
 						selectedNodes);
 				file2.makeFile();
 			}
-		}	
+		}
+		
+		appMgr.setCurrentNetwork(startNetwork);
+        appMgr.setCurrentNetworkView(startNetworkView);
+        ArrayList<CyNetworkView> list = new ArrayList<CyNetworkView>();
+        list.add(startNetworkView);
+        appMgr.setSelectedNetworkViews(list);
 	}
 }

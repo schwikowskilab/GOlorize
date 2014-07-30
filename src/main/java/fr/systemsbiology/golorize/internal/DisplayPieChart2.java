@@ -31,6 +31,7 @@ package fr.systemsbiology.golorize.internal;
 
 
 import java.util.*;
+import java.util.List;
 import java.awt.event.*;
 import javax.sound.sampled.Control;
 import javax.sound.sampled.Control.Type;
@@ -44,6 +45,14 @@ import java.awt.geom.Point2D;
 import org.cytoscape.view.model.*;
 import org.cytoscape.application.CyApplicationManager;
 import org.cytoscape.model.*;
+import org.cytoscape.view.model.VisualLexicon;
+import org.cytoscape.view.model.VisualProperty;
+import org.cytoscape.view.presentation.RenderingEngineManager;
+import org.cytoscape.view.vizmap.VisualMappingFunctionFactory;
+import org.cytoscape.view.vizmap.VisualMappingManager;
+import org.cytoscape.view.vizmap.VisualStyle;
+import org.cytoscape.view.vizmap.mappings.PassthroughMapping;
+
 
 
 import fr.systemsbiology.golorize.internal.ontology.*;
@@ -111,6 +120,10 @@ public class DisplayPieChart2 implements ActionListener {
     //relation go term / choosen color
     private HashMap goColor;
     
+	private VisualMappingManager vmm;
+	private VisualMappingFunctionFactory passthroughMapper;
+	private VisualLexicon lex;
+    
     //geneGo is the main data structure : keys are the nodes(protein nodes), and values are lists of go term choosen to be vizualized
     //geneGo is updated each time the user applies changes on the go term he wants to vizu.
     //there's a geneGo data structure for each cyNetworkView the user has processed a GO vizu (in the Option instance value of the network_Option HashMap).
@@ -121,6 +134,8 @@ public class DisplayPieChart2 implements ActionListener {
     final String RESET="Reset";
     final String APPLY_CHANGE="Validate";
     String termToRemove;
+    final String PIE_COLUMN = "GOlorize.pie";
+    final String PIE_DATA = "GOlorize.data";
     
     
     /** Creates a new instance of DisplayPieChart */
@@ -132,10 +147,12 @@ public class DisplayPieChart2 implements ActionListener {
         this.network_Option=network_Option;
         this.goBin=result.getGOlorize();
         this.goColor = goBin.getGoColor();
+        passthroughMapper = goBin.getPassthroughMapper();
         
     }
     public void actionPerformed(ActionEvent ev){
         
+    	System.out.println("action: " + ev.getActionCommand());
         doIt(ev.getActionCommand(),true,appMgr.getCurrentNetworkView());
        
         
@@ -202,10 +219,23 @@ public class DisplayPieChart2 implements ActionListener {
         CyNode geneNode;
         float pieNodeSize;
         
+        if(currentNetwork.getDefaultNodeTable().getColumn(PIE_COLUMN) != null)
+        	currentNetwork.getDefaultNodeTable().deleteColumn(PIE_COLUMN);
+        currentNetwork.getDefaultNodeTable().createColumn(PIE_COLUMN, String.class, false);
+        
+        
+        
+        if(currentNetwork.getDefaultNodeTable().getColumn(PIE_DATA) != null)
+        	currentNetwork.getDefaultNodeTable().deleteColumn(PIE_DATA);
+        	
+        currentNetwork.getDefaultNodeTable().createListColumn(PIE_DATA, Double.class, false);
+        
         
         if (!network_Option.containsKey(currentNetworkView)){
             if (actionCommande!=RESET){
-        
+            	System.out.println("Validate network view no present");
+            	goBin.getStartPanel().tabAll.setAlias(resultPanel.getAlias());
+            	goBin.getStartPanel().tabAll.setAnnotation(resultPanel.getAnnotation());
                 network_Option.put(currentNetworkView,new PieChartInfo((String)goBin.getGenesLinked().getSelectedItem(),
                                                                                 
                                                                                 currentGoSelected,
@@ -229,6 +259,7 @@ public class DisplayPieChart2 implements ActionListener {
         else {
             
             if (actionCommande==APPLY_CHANGE){
+            	System.out.println("Validate network view present");
                 Set<String> previousGoSelected = ((PieChartInfo)network_Option.get(currentNetworkView)).goToDisplay;
                 Iterator<String> it = previousGoSelected.iterator();
                 while (it.hasNext()){
@@ -251,7 +282,7 @@ public class DisplayPieChart2 implements ActionListener {
             
             if (actionCommande==RESET){
                 currentGoSelected.clear();
-                System.out.println(currentGoSelected.size());
+                System.out.println("Reset network view present");
                 goBin.getGenesLinked().setSelectedItem("All nodes in view");
                 Set<String> previousGoSelected = ((PieChartInfo)network_Option.get(currentNetworkView)).goToDisplay;
                 Iterator<String> it = previousGoSelected.iterator();
@@ -274,14 +305,21 @@ public class DisplayPieChart2 implements ActionListener {
         
             
         Set<CyNode> aVirer = new HashSet<CyNode>();
+        this.goColor = goBin.getGoColor();
+        System.out.println("colors: " + goColor.keySet());
         Iterator<CyNode> it = geneGo.keySet().iterator();
         while (it.hasNext()){
             geneNode = it.next();
             
-            createPieChild(geneNode,pieNodeSize);//attention createPieChild efface aussi
+            if(goColor.isEmpty())
+            	break;
+            System.out.println("displaying chart");
+            createPie(geneNode,pieNodeSize);//attention createPieChild efface aussi
             if ((geneGo.get(geneNode)).isEmpty())
                 aVirer.add(geneNode);
         }
+        if(geneGo.size() > 0 && goBin.getGenesLinkedView().getSelectedItem() != "No coloring")
+        	applyPieStyle();
         it = aVirer.iterator();
         while (it.hasNext()){
             geneGo.remove(it.next());
@@ -330,10 +368,12 @@ public class DisplayPieChart2 implements ActionListener {
         View<CyNode> geneView;
         int [] edgeToHide;
         Annotation annotation;
+        Map<String, Set<String>> alias =  resultPanel.getAlias();
         
         Iterator<String> it = newGo.iterator();
         
-        while (it.hasNext()){
+        while (it.hasNext())
+        {
             goTerm = (String)it.next();
             annotation = (Annotation)goTerm_Annotation.get(goTerm);
             
@@ -358,21 +398,31 @@ public class DisplayPieChart2 implements ActionListener {
                 
                 
                 try{
-                 
-                    
-                int[] goAnnot = annotation.getClassifications(geneNode.getSUID().toString());
-                
-                if (goAnnot != null){
-                    for (int i=0;i<goAnnot.length;i++){
-
-                        if (goAnnot[i]==goTermInt){
-
-                            addGoTermToGeneGo( geneNode, goTerm);
-    
-                        }
-                    }
-                }
-                
+                	
+                	String nodeName = currentNetworkView.getModel().getRow(geneNode).get(CyNetwork.NAME, String.class);
+                	
+                	//System.out.println("key: " +nodeName);
+                	//System.out.println("alias: " + alias.get(nodeName + ""));
+                	
+                	if(alias.get(nodeName) == null)
+                		continue;
+                	
+                	for(String id : alias.get(nodeName ))
+                	{
+                		//System.out.println("node id: " + id);
+		                int[] goAnnot = annotation.getClassifications(id);//geneNode.getSUID().toString());
+		                
+		                if (goAnnot != null){
+		                    for (int i=0;i<goAnnot.length;i++){
+		
+		                        if (goAnnot[i]==goTermInt){
+		                        	System.out.println("Add node " + geneNode.getSUID() + " goTerm: " + goTerm );
+		                            addGoTermToGeneGo( geneNode, goTerm);
+		    
+		                        }
+		                    }
+		                }  
+                	}
                 
                 }
                 catch (Exception e){
@@ -435,9 +485,10 @@ public class DisplayPieChart2 implements ActionListener {
      //hidden nodes are not changed and no edges are created
      boolean hasNodeView (CyNode geneNode){
                 if ( (currentNetworkView.getNodeView(geneNode))!= null)
+                	return true;
                     //if (((PNodeView)(appMgr.getCurrentNetworkView().getNodeView(geneNode))).getParent()==null)//the parent is the NodeLayer if the node is not hidden
                         return false;
-                return true;
+                
      }   
      
                         
@@ -485,9 +536,77 @@ public class DisplayPieChart2 implements ActionListener {
         return b;
     }
     
+    void applyPieStyle()
+    {
+    	VisualStyle style = goBin.getVisualMappingManager().getVisualStyle(currentNetworkView);
+    	String property = "NODE_CUSTOMGRAPHICS_4";
+    	
+        
+    	// Get the appropriate property
+        VisualProperty cgl = goBin.getVisualLexicon().lookup(CyNode.class, property);
+        
+       
+        
+    	PassthroughMapping pMapping = (PassthroughMapping) passthroughMapper.createVisualMappingFunction(PIE_COLUMN, String.class, cgl);
+    	
+    	style.addVisualMappingFunction(pMapping);
+    	
+    	style.apply(currentNetworkView);
+    }
     
     //a mettre dans la classe ColoredChildrenNode ?!
-    void createPieChild(CyNode geneNode,float sizePieNode){
+    void createPie(CyNode geneNode,float sizePieNode){
+    	
+    	double base = 10.0;
+    	String color = " colorlist=\"";
+    	String attribute = "attributelist=\"";
+    	String data = "[";
+    	Set<String> goSet = geneGo.get(geneNode);
+    	CyRow row = currentNetwork.getRow(geneNode);
+    	
+    	
+    	Iterator<String> it =goSet.iterator();
+        int nbGo = goSet.size();
+  
+        attribute += PIE_DATA;
+        attribute += "\"";
+        
+        System.out.println("go set size: " + nbGo);
+        List<Double> list = row.getList(PIE_DATA, Double.class);
+        
+        if(list != null)
+        	list.clear();
+        else
+        	list = new ArrayList<Double>();
+
+        while (it.hasNext())
+        {
+            String goTerm = it.next();
+            if(goColor.get(goTerm) == null)
+            	continue;
+            System.out.println("color: " + ColorKeyword.getColorName(((Color)goColor.get(goTerm))));
+            color += ColorKeyword.getColorName(((Color)goColor.get(goTerm))) + ",";
+            data += base/nbGo + ",";
+           
+            list.add( base/nbGo);
+        }
+        
+       
+       
+        if(goSet.size() > 0)
+        {
+	        color = color.substring(0, color.length()-1);
+	        color += "\"";
+	        data = color.substring(0, color.length()-1);
+	        data += "]";
+	        row.set(PIE_COLUMN, "piechart: " + attribute + color + " showlabels=false ");
+	        
+	      
+	        row.set(PIE_DATA, list);
+	        	
+        }
+    	
+    	
       /*  PNodeView nv = (PNodeView)currentNetworkView.getNodeView(geneNode);
         PNode cCN = null;
 

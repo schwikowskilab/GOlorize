@@ -368,10 +368,10 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 		jPanelApplyButtons.add(jButton1,constr);
 		
 
-		jButton2 = new JButton();
+		/*jButton2 = new JButton();
 		jButton2.setText("Recalculate");
 		jButton2.addActionListener(displayPieChartListener);
-		jPanelApplyButtons.add(jButton2);
+		jPanelApplyButtons.add(jButton2);*/
 
 		jButton3 = new JButton(); jButton3.setText("Reset");
 		jButton3.addActionListener(displayPieChartListener);
@@ -386,44 +386,6 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 
 		jPanelDeBase.add(jPanelApplyButtons, java.awt.BorderLayout.SOUTH);
 
-		// jPanelApplyButtons.add(new
-		// JLabel("WeightGo"),java.awt.BorderLayout.SOUTH);
-		// final JTextField jTextWeightGo = new JTextField(5);
-		// jPanelApplyButtons.add(jTextWeightGo);
-
-		// jPanelApplyButtons.add(new
-		// JLabel("krep"),java.awt.BorderLayout.SOUTH);
-		// final JTextField jTextKrep = new JTextField(5);
-
-		// jPanelApplyButtons.add(jTextKrep);
-		// jPanelApplyButtons.add(new
-		// JLabel("katt"),java.awt.BorderLayout.SOUTH);
-		// final JTextField jTextKatt = new JTextField(5);
-		// jPanelApplyButtons.add(jTextKatt);
-		// jPanelApplyButtons.add(new JLabel("Iterations"));
-		// final JTextField jTextK = new JTextField(5);
-		// jPanelApplyButtons.add(jTextK);
-		// jPanelApplyButtons.add(new JLabel("Temperature"));
-		// final JTextField jTextL = new JTextField(5);
-		// jPanelApplyButtons.add(jTextL);
-		// JButton jButton5 = new JButton("Layout");
-		// jButton5.addActionListener(new ActionListener(){
-		// public void actionPerformed(ActionEvent e){
-		// new
-		// Fruchterman(Cytoscape.getCurrentNetworkView(),jTextWeightGo.getText(),jTextKrep.getText(),jTextKatt.getText(),
-		// jTextK.getText(),jTextL.getText());
-		// }
-		// });
-		// jPanelApplyButtons.add(jButton5);
-		// JButton jButton6 = new JButton("Layout2");
-		// jButton6.addActionListener(new ActionListener(){
-		// public void actionPerformed(ActionEvent e){
-		// new
-		// FruchtermanTheEnd(Cytoscape.getCurrentNetworkView(),jTextWeightGo.getText(),jTextKrep.getText(),jTextKatt.getText(),
-		// jTextK.getText(),jTextL.getText());
-		// }
-		// });
-		// jPanelApplyButtons.add(jButton6);
 		jPanelDeBase.add(jPanelApplyButtons, java.awt.BorderLayout.SOUTH);
 
 		this.add(jPanelDeBase, java.awt.BorderLayout.CENTER);
@@ -999,68 +961,7 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 				}
 			}
 
-			// //DE LA COULEUR !!!!!
-			// if (tableColumn==resultPanel.DESCRIPTION_COLUMN){
-			/*
-			 * //j'aimerais bien pouvoir faire un choix de couleurs automatique
-			 * mais ca couille : //ca reconnais pas les clicks droits des clicks
-			 * gauches boolean automaticReussi=false; Color
-			 * previousColor=(Color)
-			 * goColor.get(jTable1.getValueAt(jTable1.rowAtPoint
-			 * (point),resultPanel.GO_TERM_COLUMN));
-			 */
-			// String
-			// term=(String)jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.getGoTermColumn());
-			// if ((ev.getModifiersEx()&InputEvent.BUTTON1_DOWN_MASK) !=0 ){
-			/*
-			 * if (previousColor!=null){
-			 * 
-			 * ((JLabel)jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.
-			 * DESCRIPTION_COLUMN)).setBackground(null);
-			 * ((JLabel)jTable1.getValueAt
-			 * (jTable1.rowAtPoint(point),resultPanel.
-			 * DESCRIPTION_COLUMN)).revalidate();
-			 * goBin.freeAutomaticColor(term); goBin.goColor.remove(term);
-			 * 
-			 * jTable1.validate(); //goBin.repaint(); goBin.synchroColor();
-			 * automaticReussi=true; } else { Color newColor =
-			 * goBin.getNextAutomaticColor(term); if (newColor !=null){
-			 * ((JLabel)
-			 * jTable1.getValueAt(jTable1.rowAtPoint(point),resultPanel.
-			 * DESCRIPTION_COLUMN)).setBackground(newColor);
-			 * ((JLabel)jTable1.getValueAt
-			 * (jTable1.rowAtPoint(point),resultPanel.
-			 * DESCRIPTION_COLUMN)).revalidate();
-			 * goBin.goColor.put(term,newColor);
-			 * 
-			 * jTable1.validate(); goBin.synchroColor(); automaticReussi=true; }
-			 * }
-			 * 
-			 * //}
-			 * 
-			 * if (!automaticReussi){
-			 */
-			/*
-			 * JColorChooser colorChooser = new JColorChooser();
-			 * 
-			 * Color newColor = JColorChooser.showDialog( jTable1,
-			 * "Choose GO Color", (Color)goColor.get(term) );
-			 * ((JLabel)jTable1.getValueAt
-			 * (jTable1.rowAtPoint(point),resultPanel.
-			 * DESCRIPTION_COLUMN)).setBackground(newColor);
-			 * //((JLabel)jTable1.getValueAt
-			 * (jTable1.rowAtPoint(point),2)).setText(jTable1.getValueAt())
-			 * goColor.put(term,newColor);
-			 * goBin.getGoColor().put(jTable1.getValueAt
-			 * (jTable1.rowAtPoint(point),ResultPanel.GO_TERM_COLUMN),newColor);
-			 * jTable1.validate(); resultPanel.goBin.synchroColor();
-			 */
-			// }
-			// jTable1.
-
-			// goBin.repaint();
-
-			// }
+			
 
 			// Listen to column "gene machined to term"
 			if (jTable1.columnAtPoint(point) == columnNames.length - 1) {
@@ -1130,7 +1031,7 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 		return originalNetworkView;
 	}
 
-	public Map getAlias() {
+	public  Map<String, Set<String>> getAlias() {
 		return alias;
 	}
 
@@ -1146,6 +1047,11 @@ public class ResultPanel extends JPanel implements ResultAndStartPanel {
 		return this.fileName;
 
 	}
+	
+	public void setAlias(Map<String, Set<String>> alias)
+    {
+    	this.alias = alias;
+    }
 	
 	public DisplayPieChart2 getDisplayPieChart(){
         return this.displayPieChartListener;

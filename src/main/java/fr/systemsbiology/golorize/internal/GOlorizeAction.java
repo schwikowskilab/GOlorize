@@ -85,7 +85,7 @@ public class GOlorizeAction extends AbstractCyAction {
 	 */
 	public void actionPerformed(ActionEvent event) {
 		//final JFrame window = new JFrame(WINDOW_TITLE);
-		final GOlorize golPanel = new GOlorize(rootNetMgr,viewMgr,appMgr,vmMgr,(CySwingAppAdapter)adapter, openBrowserService, syncTaskManager);
+		final GOlorize golPanel = new GOlorize(rootNetMgr,viewMgr,appMgr,vmMgr,serviceRegistrar,(CySwingAppAdapter)adapter, openBrowserService, syncTaskManager);
 		//window.getContentPane().add(golPanel);
 		//window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//window.pack();

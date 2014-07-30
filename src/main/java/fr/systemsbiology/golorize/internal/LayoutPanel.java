@@ -704,7 +704,8 @@ public class LayoutPanel implements ResultAndStartPanel{
         }
         new FruchtermanTheEnd(this,goNodesNormal,goNodesStrange,getNetworkView(),"","","", "","");
            
-        appMgr.getCurrentNetworkView().updateView();
+        //appMgr.getCurrentNetworkView().updateView();
+        appMgr.getCurrentNetworkView().fitContent();
        
     }
     public DisplayPieChart2 getDisplayPieChart(){
@@ -901,8 +902,13 @@ public class LayoutPanel implements ResultAndStartPanel{
     public CyNetworkView getNetworkView() {
 		return appMgr.getCurrentNetworkView();
 	}
+    
+    public void setAlias(Map<String, Set<String>> alias)
+    {
+    	this.alias = alias;
+    }
 
-	public Map getAlias() {
+	public Map<String, Set<String>> getAlias() {
 		return alias;
 	}
     

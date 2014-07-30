@@ -566,7 +566,22 @@ public class StartPanelPanel extends javax.swing.JPanel implements ResultAndStar
 		return appMgr.getCurrentNetworkView();
 	}
 
-	public Map getAlias() {
+	public Map<String, Set<String>> getAlias() {
 		return alias;
 	}
+	
+	public void setAlias(Map<String, Set<String>> alias)
+    {
+		if(this.alias == null)
+			this.alias = alias;
+		else
+		{
+			Map<String, Set<String>> tempAlias = alias;
+			for(String key : tempAlias.keySet())
+			{
+				if(!this.alias.containsKey(key))
+					this.alias.put(key, tempAlias.get(key));
+			}
+		}
+    }
 }
