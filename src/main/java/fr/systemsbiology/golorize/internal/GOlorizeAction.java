@@ -22,6 +22,10 @@ import org.cytoscape.view.model.CyNetworkViewManager;
 import org.cytoscape.view.vizmap.VisualMappingManager;
 import org.cytoscape.work.SynchronousTaskManager;
 import org.cytoscape.work.swing.PanelTaskManager;
+import org.cytoscape.view.presentation.customgraphics.CyCustomGraphics2;
+import org.cytoscape.view.presentation.customgraphics.CyCustomGraphics2Factory;
+import org.cytoscape.view.presentation.property.values.CyColumnIdentifier;
+import org.cytoscape.view.presentation.property.values.CyColumnIdentifierFactory;
 
 
 public class GOlorizeAction extends AbstractCyAction {
@@ -48,6 +52,7 @@ public class GOlorizeAction extends AbstractCyAction {
 	private CyApplicationManager appMgr;
 	private PanelTaskManager taskManager;
 	private CyServiceRegistrar serviceRegistrar;
+	private CustomChartListener customChartListener;
 
 	// The constructor sets the text that should appear on the menu item.
 	public GOlorizeAction(
@@ -58,7 +63,8 @@ public class GOlorizeAction extends AbstractCyAction {
             final CyServiceRegistrar serviceRegistrar,
             final CySwingAppAdapter adapter, 
             final OpenBrowser openBrowserService, 
-            final SynchronousTaskManager<?> syncTaskManager) {
+            final SynchronousTaskManager<?> syncTaskManager,
+            final CustomChartListener customChartManager) {
 		super(MENU_NAME);
 		this.adapter = adapter;
 		this.openBrowserService = openBrowserService;
@@ -69,6 +75,7 @@ public class GOlorizeAction extends AbstractCyAction {
 		this.rootNetMgr = rootNetMgr;
 		this.vmMgr = vmMgr;
 		this.serviceRegistrar = serviceRegistrar;
+		this.customChartListener = customChartManager;
 		
 		//String cwd = System.getProperty(CURRENT_WORKING_DIRECTORY);
 		String cwd =   System.getProperty("user.home");
@@ -85,7 +92,8 @@ public class GOlorizeAction extends AbstractCyAction {
 	 */
 	public void actionPerformed(ActionEvent event) {
 		//final JFrame window = new JFrame(WINDOW_TITLE);
-		final GOlorize golPanel = new GOlorize(rootNetMgr,viewMgr,appMgr,vmMgr,serviceRegistrar,(CySwingAppAdapter)adapter, openBrowserService, syncTaskManager);
+		final GOlorize golPanel = new GOlorize(rootNetMgr,viewMgr,appMgr,vmMgr,serviceRegistrar,(CySwingAppAdapter)adapter, 
+				openBrowserService, syncTaskManager,customChartListener);
 		//window.getContentPane().add(golPanel);
 		//window.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		//window.pack();

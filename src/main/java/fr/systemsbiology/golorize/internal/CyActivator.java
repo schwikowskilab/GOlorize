@@ -30,6 +30,8 @@ import org.cytoscape.view.model.CyNetworkViewManager;
 import org.cytoscape.view.vizmap.VisualMappingManager;
 import org.cytoscape.work.TunableSetter;
 import org.cytoscape.work.swing.PanelTaskManager;
+import org.cytoscape.view.presentation.customgraphics.CyCustomGraphics2Factory;
+import org.cytoscape.view.presentation.property.values.CyColumnIdentifierFactory;
 
 
 import java.util.Properties;
@@ -64,9 +66,13 @@ public class CyActivator extends AbstractCyActivator {
 		CySwingAppAdapter adapter = getService(bc,CySwingAppAdapter.class);
 		OpenBrowser openBrowserService = getService(bc,OpenBrowser.class);
 		SynchronousTaskManager<?> syncTaskManager = getService(bc, SynchronousTaskManager.class);
+		// Only way to get the custom graphics factory is to use a service listener.
+		final CustomChartListener customChartManager = new CustomChartListener();
+		registerServiceListener(bc, customChartManager, "addCustomGraphicsFactory", "removeCustomGraphicsFactory", CyCustomGraphics2Factory.class);
+
 
 		GOlorizeAction golAction = new GOlorizeAction(rootNetworkManagerServiceRef,cyNetworkViewManagerServiceRef,cyApplicationManagerServiceRef,
-               visualMappingManagerServiceRef,cyServiceRegistrarServiceRef, adapter,openBrowserService,syncTaskManager);
+               visualMappingManagerServiceRef,cyServiceRegistrarServiceRef, adapter,openBrowserService,syncTaskManager, customChartManager);
 		
 		registerService(bc,golAction,CyAction.class, new Properties());
 

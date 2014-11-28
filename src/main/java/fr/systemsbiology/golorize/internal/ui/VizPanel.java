@@ -144,13 +144,13 @@ private final int DIM_HEIGHT = 200 ;*/
      */
     public void makeJComponents() {
 
-        yesButton = new JRadioButton(VIZSTRING, false);
+        yesButton = new JRadioButton(VIZSTRING, true);
         yesButton.setIcon(unchecked);
         yesButton.setSelectedIcon(checked);
         yesButton.setMnemonic(KeyEvent.VK_G);
         yesButton.setActionCommand(VIZSTRING);
 
-        noButton = new JRadioButton(NOVIZSTRING, true);
+        noButton = new JRadioButton(NOVIZSTRING, false);
         noButton.setIcon(unchecked);
         noButton.setSelectedIcon(checked);
         noButton.setMnemonic(KeyEvent.VK_S);

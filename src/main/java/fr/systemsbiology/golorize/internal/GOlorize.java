@@ -89,6 +89,7 @@ import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.view.vizmap.VisualMappingFunctionFactory;
 import org.cytoscape.view.model.VisualLexicon;
 import org.cytoscape.view.presentation.RenderingEngineManager;
+import org.cytoscape.view.presentation.property.values.CyColumnIdentifierFactory;
 
 
 
@@ -141,6 +142,7 @@ public class GOlorize extends JFrame {
 	private boolean bingoLaunched;
 
 	private CyNetworkView networkView;
+	private CustomChartListener customChartListener;
 
 	private HashMap goColor = new HashMap();
 	
@@ -154,7 +156,8 @@ public class GOlorize extends JFrame {
 	                    final CyServiceRegistrar serviceRegistrar,
 	                    final CySwingAppAdapter adapter, 
 	                    final OpenBrowser openBrowserService, 
-	                    final SynchronousTaskManager<?> syncTaskManager)
+	                    final SynchronousTaskManager<?> syncTaskManager,
+	                    final CustomChartListener customChartManager)
 	{
 		
 		this.appMgr = appMgr;
@@ -165,6 +168,7 @@ public class GOlorize extends JFrame {
 		this.openBrowserService = openBrowserService;
 		this.syncTaskManager = syncTaskManager;
 		this.serviceRegistrar = serviceRegistrar;
+		this.customChartListener = customChartManager;
 		
 		this.jTabbedPane=new javax.swing.JTabbedPane(JTabbedPane.TOP);
 	
@@ -199,7 +203,7 @@ public class GOlorize extends JFrame {
         northPanel.add(new JLabel("Apply coloring"));
         northPanel.add(getGenesLinked());
         
-        genesLinkedView = new JComboBox(); 
+        /*genesLinkedView = new JComboBox(); 
         getGenesLinkedView().addItem("No coloring");
         getGenesLinkedView().addItem("Small pie size");
         getGenesLinkedView().addItem("Default pie size");
@@ -231,7 +235,7 @@ public class GOlorize extends JFrame {
                 }
                 
             }
-        });
+        });*/
         
         getContentPane().add(northPanel,java.awt.BorderLayout.NORTH);
         
@@ -779,12 +783,23 @@ public class GOlorize extends JFrame {
     	return vmMgr;
     }
     
+    public CustomChartListener getCustomChartsListener(){
+    	return customChartListener;
+    }
+    
     public VisualMappingFunctionFactory getPassthroughMapper(){
     	return serviceRegistrar.getService(VisualMappingFunctionFactory.class, "(mapping.type=passthrough)");
     }
     
+    public CyColumnIdentifierFactory getColumnIdFactory(){
+    	return  serviceRegistrar.getService( CyColumnIdentifierFactory.class);
+    }
     public VisualLexicon getVisualLexicon(){
     	return serviceRegistrar.getService(RenderingEngineManager.class).getDefaultVisualLexicon();
+    }
+    
+    public VisualMappingFunctionFactory getVisualMappingFactory(){
+    	return serviceRegistrar.getService( VisualMappingFunctionFactory.class, "(mapping.type=discrete)");
     }
 }
 

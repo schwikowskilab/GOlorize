@@ -39,17 +39,15 @@ public class PieChartInfo {
         String genesLinked;
         String goNodeView;
         Set<String> goToDisplay;
-        String genesLinkedView;
         
         
         
         Map<CyNode,Set<String>> geneGo = new HashMap<CyNode,Set<String>>();
          
-        public PieChartInfo(String genesLinked, Set<String> goToDisplay,String genesLinkedView,Set createdGoNodes){
+        public PieChartInfo(String genesLinked, Set<String> goToDisplay,Set createdGoNodes){
             this.genesLinked=genesLinked;
             this.goNodeView=goNodeView;
             this.goToDisplay=goToDisplay;
-            this.genesLinkedView= genesLinkedView;
             
             
         }
