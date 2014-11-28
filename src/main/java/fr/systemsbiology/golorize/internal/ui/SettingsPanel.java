@@ -42,6 +42,7 @@ import java.awt.GridBagLayout;
 import java.awt.event.KeyEvent;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.Set;
 
 import javax.swing.BorderFactory;
 import javax.swing.JButton;
@@ -53,6 +54,7 @@ import javax.swing.JTextField;
 
 import org.cytoscape.app.swing.CySwingAppAdapter;
 import org.cytoscape.application.CyApplicationManager;
+import org.cytoscape.model.CyNetwork;
 import org.cytoscape.model.subnetwork.CyRootNetworkManager;
 import org.cytoscape.util.swing.OpenBrowser;
 import org.cytoscape.view.model.CyNetworkViewManager;
@@ -440,9 +442,10 @@ public class SettingsPanel extends JPanel {
 		categoriesBox.setSelectedItem(bingo_props.getProperty("categories_def"));
 		clusterVsPanel = new ChooseRefSetPanel(this, bingoDir, clusterVsArray, bingo_props.getProperty("refset_def"));
 
+		
 		// JTextField.
 		alphaField = new JTextField(bingo_props.getProperty("signif_def"));
-		nameField = new JTextField("");
+		nameField = new JTextField(getUniqueName());
 
 		// OverUnderPanel
 		overUnderPanel = new OverUnderPanel();
@@ -607,5 +610,37 @@ public class SettingsPanel extends JPanel {
 
 	public BingoParameters getParams() {
 		return params;
+	}
+	
+	private String getUniqueName()
+	{
+		String name = "Bingo Cluster ";
+		
+		for(int i =1; i< 10001; i++)
+		{
+			if(!checkNetworkName(name + i))
+			{
+				name  += i;
+				break;
+			}
+		}
+		
+		
+		return name;
+	}
+	
+	private boolean checkNetworkName(String name)
+	{
+		final Set<CyNetwork> networkSet = adapter.getCyNetworkManager().getNetworkSet();
+		for (final CyNetwork network : networkSet) {
+			//final String title = network.getCyRow().get(CyNetwork.NAME, String.class);
+			final String title = network.getDefaultNetworkTable().getRow(network.getSUID()).get(CyNetwork.NAME, String.class);
+			
+			if (name.equals(title)) {
+				return true;
+			}
+		}
+		
+		return false;
 	}
 }
